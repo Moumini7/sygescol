@@ -1,0 +1,42 @@
+
+.metric-card {
+    background-color: #f3f4f6;  /* gris clair */
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: left;
+    transition: transform 0.7s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    
+}
+
+.metric-card-green { background-color: #15616d; color: white; }
+.metric-card-blue { background-color: #156f61; color: white; }
+.metric-card-yellow { background-color: #0f8f7c; color: white; }
+.metric-card-red { background-color: #13ae97; color: white; }
+
+.metric-title {
+    font-size: 17px;
+    font-weight: 450;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+/**
+.metric-delta {
+    font-size: 14px;
+    color: #d1d5db;
+}
+
+.delta-up { color: #10b981; font-weight: 600; }
+.delta-down { color: #ef4444; font-weight: 600; }
+
+**/

@@ -75,7 +75,7 @@ SYGESCO_APP/
 
 ---
 
-## 🗄Modèle de données
+## Modèle de données
 
 Table principale : strml_td
 
@@ -108,7 +108,7 @@ pip install -r requirements.txt
 
 ---
 
-## ▶Lancer l’application
+## Lancer l’application
 
 streamlit run app.py
 

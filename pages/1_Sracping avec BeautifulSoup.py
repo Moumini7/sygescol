@@ -25,7 +25,7 @@ CATEGORIES = {
     "Chaussures pour enfants": "chaussures-enfants"
 }
 
-# ================= ZONE DE PILOTAGE =================
+# Sélection des critères de scraping
 st.subheader(" Ctritères de Scraping ")
 col1, col2, col3 = st.columns([3, 2, 2])
 
@@ -51,14 +51,15 @@ with col3:
         "Démarrer le Scraping",
         use_container_width=True,
         key="lancer_scraping_button",
-        type="secondary"
+        type="primary"
     )
 
 categorie_slug = CATEGORIES[categorie_label]
 
 st.divider()
 st.subheader(" Scraping en temps réel ")
-# ================= SCRAPING =================
+
+# Scraping en temps réel avec BeautifulSoup
 if lancer_scraping:
     with st.spinner(f"Scraping en cours : {categorie_label}"):
         df = db_manager.chargementData(categorie_slug, nb_pages)
@@ -66,21 +67,46 @@ if lancer_scraping:
     st.success("Scraping terminé")
 
     if not df.empty:
-        st.metric("Nombre d’éléments scrapés", len(df))
+       
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Total en base", len(df))
+        with col2:
+            moyenne = df["prix"].mean()
+            moyenne = f"{moyenne:.0f}" 
+            st.metric("Prix moyen", moyenne)
+        with col3:
+            st.metric("Catégories", df["categorie"].nunique())
+        with col4:
+            st.metric("Types d'articles", df["type"].nunique())
+
         st.dataframe(df, use_container_width=True)
     else:
         st.warning("Aucune donnée récupérée en temps réel.")
 else:
     st.info("Aucune donnée collectées.")
 
-# ================= DONNÉES EXISTANTES =================
+
+# Données disponibles dans la base de données
 st.divider()
 st.subheader(" Données déjà disponibles en base de données ")
 
 df_read = db_manager.read_streamlit_bd()
 
 if isinstance(df_read, pd.DataFrame) and not df_read.empty:
-    st.metric("Total en base", len(df_read))
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Total en base", len(df_read))
+    with col2:
+        moyenne = df_read["prix"].mean()
+        moyenne = f"{moyenne:.0f}" 
+        st.metric("Prix moyen", moyenne)
+    with col3:
+        st.metric("Catégories", df_read["categorie"].nunique())
+    with col4:
+        st.metric("Types d'articles", df_read["type"].nunique())
+        
     st.dataframe(df_read, use_container_width=True)
 else:
     st.info("Aucune donnée dans la base de données.")

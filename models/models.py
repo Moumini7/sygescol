@@ -5,6 +5,7 @@ from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
 import streamlit as st
+import time
 
 class Strmlit_DBManager:
 
@@ -92,7 +93,7 @@ class Strmlit_DBManager:
 
         for i in range(nombre_pages):
             page_url = f"{base_url}{categorie}?page={i+1}"
-            res = get(page_url, timeout=30)
+            res = get(page_url, timeout=60)
             soup = bs(res.content, 'html.parser')
             containers = soup.find_all('div', class_='col s6 m4 l3')
 
@@ -123,6 +124,9 @@ class Strmlit_DBManager:
 
                 except (AttributeError, ValueError):
                     continue
+            
+            #pour les anti blocage du site
+            time.sleep(2)
 
         conn.commit()
         conn.close()
@@ -153,12 +157,6 @@ class Styles_manager:
             """, unsafe_allow_html=True)
         
         LOGO_PATH = "images/sygescol_ltd.png"
-        # Petit hack pour forcer la taille du logo via CSS
-        st.markdown(f"""
-            <style>
-                [data-testid="stLogo"] {{ height: 5rem; width: auto; }}
-            </style>
-        """, unsafe_allow_html=True)
         st.logo(LOGO_PATH, icon_image=LOGO_PATH, size="large")
         
         current_dir = Path(__file__).resolve().parent.parent

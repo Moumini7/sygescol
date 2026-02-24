@@ -105,7 +105,6 @@ with col4:
     """, unsafe_allow_html=True)
 
 st.divider()
-st.subheader("Visualisation des données collectées")
 df = db_manager.read_streamlit_bd()
 
 st.subheader("Répartition des prix collectés")

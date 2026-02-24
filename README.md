@@ -42,34 +42,33 @@ L’application permet d’extraire des annonces par catégorie, de les enregist
 
 ---
 
-## Architecture du système
-"Organisation du projet : SYGESCO_APP":{
-	"data":{
-		"data_bs":{}
-		"data_ws":{}
-		"streamlit_.db":"file"
-	}
-	"models":{
-		"models.py":"file"
-	}
-	"images":{
-		"sygescol.png":"file"
-	}
-	"pages":{
-		"1_Sracping avec BeautifulSou.py":"file"
-		"2_Afficher datasets de Web S..py":"file"
-		"3_Visualiser les Datasets de ..py":"file"
-		"4_Feedback.py":"file"
-		"5_A Propos.py":"file"
-		"README.md":"file"
-		}
-	"utils":{
-		"styles.css":"file"
-	}
-	"app.py":"file"
-	"README.md":"file"
-	"requirements.txt":"file"
-}
+SYGESCO_APP/
+│
+├── app.py # Point d’entrée de l’application Streamlit
+├── README.md # Documentation du projet
+├── requirements.txt # Dépendances Python
+│
+├── data/ # Données et base locale
+│ ├── streamlit_.db # Base SQLite
+│ ├── data_bs/ # Données issues du scraping BeautifulSoup
+│ └── data_ws/ # Autres sources de données
+│
+├── models/ # Gestion de la base de données
+│ └── models.py
+│
+├── utils/ # Fichiers utilitaires
+│ └── styles.css # Styles personnalisés Streamlit
+│
+├── images/ # Ressources graphiques
+│ └── sygescol.png
+│
+├── pages/ # Pages secondaires Streamlit
+│ ├── 1_Scraping_avec_BeautifulSoup.py
+│ ├── 2_Afficher_datasets_WebScraping.py
+│ ├── 3_Visualiser_Datasets.py
+│ ├── 4_Feedback.py
+│ ├── 5_A_Propos.py
+│ └── README.md
 
 
 ---

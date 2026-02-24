@@ -1,7 +1,7 @@
 # SyGesCo_App
 #Collecte, Stockage et Analyse de Données d’Annonces en Ligne
 
-## Projet académique — Master Intelligence Artificielle / Data Science
+## Projet académique — Master Intelligence Artificielle / Data Collection
 ---
 ## Description du projet
 Ce projet consiste à concevoir un système complet de collecte automatisée, de collect, stockage et d’analyse de données issues d’annonces en ligne .  

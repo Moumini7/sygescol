@@ -4,7 +4,7 @@
 ## Projet académique — Master Intelligence Artificielle / Data Science
 ---
 ## Description du projet
-Ce projet consiste à concevoir un système complet de collecte automatisée, de collect, stockage et d’analyse de données issues d’annonces en ligne (https://sn.coinafrique.com/categorie/) sur les catégorie (vetements-enfants, vetements-homme, chaussures-homme et chaussures-enfants.  
+Ce projet consiste à concevoir un système complet de collecte automatisée, de collect, stockage et d’analyse de données issues d’annonces en ligne .  
 - url1 : https://sn.coinafrique.com/categorie/vetements-homme
 - url2 : https://sn.coinafrique.com/categorie/vetements-enfants
 - url3 : https://sn.coinafrique.com/categorie/chaussures-homme

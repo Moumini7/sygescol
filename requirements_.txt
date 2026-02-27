@@ -4,4 +4,3 @@ numpy
 requests
 beautifulsoup4
 matplotlib
-plotly>=5.30.0

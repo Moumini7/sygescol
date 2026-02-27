@@ -79,7 +79,6 @@ else:
                 if st.button("Annuler"):
                     st.rerun()
         confirm_delete()
-st.rerun()
 
 st.divider()
 
@@ -109,4 +108,3 @@ if st.button("Vider la base de données", type="primary", icon="🗑️"):
                 st.rerun()
     
     confirm_clear_db()
-st.rerun()

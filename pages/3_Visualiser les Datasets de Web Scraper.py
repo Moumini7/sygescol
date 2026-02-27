@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os as os
-import plotly.express as px
 import altair as alt
 from pathlib import Path
 from models.models import Styles_manager, Strmlit_DBManager

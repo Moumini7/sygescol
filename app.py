@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-from pathlib import Path
+import altair as alt
 from models.models import Strmlit_DBManager, Styles_manager, DataStats
-import streamlit as st
+
 
 Styles_manager.load_css()
 db_manager = Strmlit_DBManager()
@@ -107,7 +107,24 @@ with col4:
 st.divider()
 df = db_manager.read_streamlit_bd()
 
-st.subheader("Répartition des prix collectés")
-st.bar_chart(df[['prix','categorie']].value_counts().reset_index(name='count'), x='prix', y='count', color='categorie', height=600)
+if not isinstance(df, pd.DataFrame) or df.empty:
+    st.info("Aucune donnée disponible pour les visualisations.")
+else:
+    col1, col2 = st.columns(2)
 
+    with col1:
+        t_recent = df["type"].value_counts().head(10).reset_index()
+        t_recent.columns = ["Produit", "Occurrences"]
+        chart = alt.Chart(t_recent).mark_bar(color="#107584").encode(
+            x=alt.X("Produit", sort="-y"),
+            y="Occurrences"
+        )
+
+        st.subheader("Top 10 des produits les plus récurrents")
+        st.altair_chart(chart, use_container_width=True)
+
+    with col2:
+        st.subheader("Top 5 des adresses les moins chères (prix moyen)")
+        t_mcher = (df.groupby("adresse")["prix"].mean().sort_values().head(5).reset_index())
+        st.dataframe(t_mcher)
 

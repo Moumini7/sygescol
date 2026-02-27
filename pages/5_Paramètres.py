@@ -23,7 +23,7 @@ st.markdown(f"""
 
 # uploader un nouveau dataset
 #--------------------------------
-st.subheader("Téléversez un dataset")
+st.subheader("Téléversez un dataset collécté avec Web Scraper")
 
 uploaded_files = st.file_uploader(
     "Téléverser",
@@ -60,8 +60,8 @@ else:
         "Sélectionner un dataset à supprimer",
         file_names
     )
-
-    if st.button("Supprimer le fichier"):
+    st.error(f"Attention : Cette action supprimera définitivement le fichier '{selected_file}' du dossier data_ws.")
+    if st.button("Supprimer le fichier", type="primary", icon="🗑️"):
         @st.dialog("Confirmation de suppression")
         def confirm_delete():
             st.warning(f"Voulez-vous vraiment supprimer : {selected_file} ?")
@@ -87,7 +87,7 @@ st.divider()
 st.subheader("Gestion de la Base de Données")
 st.error("Cette action supprimera toutes les lignes stockées dans la table SQL.")
 
-if st.button("Vider toute la base de données", type="secondary", icon="🗑️"):
+if st.button("Vider la base de données", type="primary", icon="🗑️"):
     
     @st.dialog("Confirmation de vidange")
     def confirm_clear_db():

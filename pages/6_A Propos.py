@@ -24,12 +24,7 @@ with st.expander("Présentation Générale"):
     st.markdown("""
     Cette application a été développée dans le cadre d’un projet de Data Collection et d’analyse de données.
     Elle permet de collecter, centraliser, nettoyer et analyser des datasets issus du plugin Web Scraping 
-    et de la bibliothèque BeautifulSoup, BeautifulSoup à travers une interface interactive et structurée.
-
-    **Problématique adressée :**
-    - Centralisation des données collectées
-    - Organisation des fichiers
-    - Simplification de l’analyse exploratoire
+    et de la bibliothèque BeautifulSoup à travers une interface interactive et structurée.
     """)
 
 # ----------------------------------------------------
@@ -41,12 +36,11 @@ with st.expander("Objectifs du Projet"):
     des technologies et méthodologies utilisées pour la collecte et le traitement de données, 
     l'organisation et l'analyse de données à travers une application interactive avec le framework [Streamlit](https://streamlit.io) en :
                 
-    - Automatisant la collecte de données via BeautifulSoup ou Selenium
-    - Visualisant les brutes datasets collectés de manière interactive avec Web Scraper  
-    - Centralisant les datasets dans une structure organisée  
-    - Facilitant le nettoyage et la préparation des données  
-    - Améliorerant la qualité et la fiabilité des analyses  
-    - Offrant un tableau de bord interactif pour la visualisation  
+    - Automatisant la collecte de données via les bibliothèques BeautifulSoup ou Selenium
+    - Visualisant les datasets brutes  collectés de manière interactive avec  [Web Scraper](https://www.webscraper.io) 
+    - Centralisant les datasets dans une structure organisée,  
+    - Facilitant le nettoyage et la préparation des données, 
+    - Offrant un tableau de bord interactif pour la visualisation.  
     """)
 
 # ----------------------------------------------------
@@ -55,10 +49,9 @@ with st.expander("Objectifs du Projet"):
 with st.expander("Fonctionnalités Principales"):
     st.markdown("""
     ### Gestion des Datasets
-    - Collecte automatique et interactifs de datasets sur le site [Coin Afrique](https://www.coinafrique.com) 
+    - Collecte automatique avec BeautifullSoup sur [Coin Afrique](https://www.coinafrique.com) 
     - Téléversement de fichiers CSV  
-    - Suppression sécurisée avec confirmation  
-    - Organisation automatique des données 
+    - Suppression sécurisée avec confirmation 
     - sauvegarder des données collecter dans une base de données 
 
     ### Analyse de Données
@@ -88,13 +81,12 @@ with st.expander("Architecture Technique"):
     - time
     - pathlib
     - Scikit-learn  
+    - altair
 
     **Organisation du projet :**
     - Dossier structuré par modules  
     - Séparation logique des pages  
-    - Gestion centralisée des données  
     """)
-
 
     {
   "Organisation du projet : SYGESCO_APP": {
@@ -111,14 +103,13 @@ with st.expander("Architecture Technique"):
       "2_Afficher datasets de Web S..py": "file",
       "3_Visualiser les Datasets de ..py": "file",
       "4_Feedback.py": "file",
-      "5_A Propos.py": "file",
-      "README.md": "file"
+      "5_Paramètres.py": "file",
+      "6_A Propos.py": "file",
     },
     "utils": {
       "styles.css": "file"
     },
     "app.py": "file",
-    "models.py": "file",
     "README.md": "file",
     "requirements.txt": "file",
   }
@@ -135,7 +126,7 @@ with st.expander("Auteur"):
     """)
 
 with st.expander("Licence"):
-    st.markdown("""© 2026 SYGESCOL. Tous droits réservés.""", unsafe_allow_html=True)
+    st.markdown("""2026 SYGESCOL. GNU General Public License (GPL), version 3 .""", unsafe_allow_html=True)
 
 
 
@@ -145,8 +136,8 @@ st.header("Implementation Technique")
 # ----------------------------------------------------
 # 1. Gestion de la Base de Données
 # ----------------------------------------------------
-with st.expander("Gestion modularisée du code et de la structure du projet"):
-    st.write("Cette classe  toutes les fonctions liées à la gestion de la base de données SQLite utilisée pour stocker les données collectées.")
+with st.expander("class Strmlit_DBManager"):
+    st.write("Cette classe gère la base de données SQLite utilisée pour stocker les données collectées.")
 
     st.code("""
 class Strmlit_DBManager:
@@ -159,12 +150,7 @@ class Strmlit_DBManager:
         self.data_folder = data_dir / "data_bs"
     """, language="python")
 
-    st.info(""" Elle permet de :
-    - Créer la base de données et les tables nécessaires
-    - Utilision un chemin absolu pour éviter les erreurs d’accès aux fichiers  
-    - Crée automatiquement le dossier data s’il n’existe pas  
-    - Centralise les ressources (BD + CSV)
-    """)
+    st.info(""" Initialisation de la classe""")
 
 # ----------------------------------------------------
 # 2. Création de la base de données
@@ -238,9 +224,6 @@ def init_streamlit_bd(self):
     - La fonction retourne ensuite une connexion prête à l’emploi  
     - Évite toute erreur lors du premier lancement de l’application
     - read_streamlit_bd() utilise cette connexion pour lire les données et les retourner sous forme de DataFrame  
-
-    Ce mécanisme rend l’application autonome : aucune configuration
-    manuelle de la base n’est nécessaire.
     """)
 
 # ----------------------------------------------------
@@ -258,9 +241,9 @@ def chargementData(self, categorie, nombre_pages):
     items = []
 
     for i in range(nombre_pages):
-        page_url = f"{base_url}{categorie}?page={i+1}"
+        #page_url = f"{base_url}{categorie}?page={i+1}"
         try:
-            res = get(page_url, timeout=30)
+            res = get(page_url, timeout=60)
             soup = bs(res.content, "html.parser")
             containers = soup.find_all("div", class_="col s6 m4 l3")
         except Exception:
@@ -309,28 +292,25 @@ def chargementData(self, categorie, nombre_pages):
     if items:
         df = pd.DataFrame(items)
         # Sauvegarde CSV
-        filename = self.data_folder / f"{categorie}_data.csv" # Ajout du prefixe 'ws' comme demandé plus tôt
+        filename = self.data_folder / f"{categorie}_data.csv"
         df.to_csv(filename, index=False)
         return df
     else:
-        return pd.DataFrame() # Retourne un DF vide si rien n'est trouvé
+        return pd.DataFrame()
 ''', language="python")
     st.info("""
-    Fonctionnement global :
+  Fonctionnement global :
+  - Parcourt plusieurs pages de résultats depuis le site CoinAfrique
+  - Extrait les informations essentielles :
+      • catégorie 
+      • type d’article   
+      • prix  
+      • localisation  
+      • lien image  
 
-    - Récupère les annonces depuis le site CoinAfrique  
-    - Parcourt plusieurs pages de résultats  
-    - Extrait les informations essentielles :
-       • catégorie    
-       • prix  
-       • localisation  
-       • image  
-
-    - Insère les données dans la base SQLite  
-    - Construit un DataFrame Pandas  
-    - Sauvegarde les données en fichier CSV  
-    - Retourne les données pour affichage immédiat  
-
+  - Insère les données dans la base SQLite  
+  - Construit un DataFrame Pandas  
+  - Sauvegarde les données en fichier CSV dans le dossier `data/data_bs` 
     Elle implement les méthodes citées plus haut. La collecte s’arrête automatiquement si aucune annonce n’est trouvée.
     """)
 

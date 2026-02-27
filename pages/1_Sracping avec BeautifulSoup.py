@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import time
 from models.models import Strmlit_DBManager, Styles_manager
 
 db_manager = Strmlit_DBManager()
@@ -46,12 +45,28 @@ with col2:
 
 
 with col3:
-    st.markdown("""<br/>""", unsafe_allow_html=True)
+       
+    st.markdown("""
+    <style>
+    /* Cible le bouton "Démarrer le Scraping" par key */
+    div.stButton > button:first-child {
+        background-color: #28a745;  /* vert */
+        color: white;               /* texte blanc */
+        font-weight: bold;
+        width: 100%;
+        margin-top: 12px;
+    }
+    div.stButton > button:hover {
+        background-color: #218838;  /* vert foncé au survol */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     lancer_scraping = st.button(
         "Démarrer le Scraping",
         use_container_width=True,
         key="lancer_scraping_button",
-        type="primary"
+        icon="✔️"
     )
 
 categorie_slug = CATEGORIES[categorie_label]
@@ -89,7 +104,7 @@ else:
 
 # Données disponibles dans la base de données
 st.divider()
-st.subheader(" Données déjà disponibles en base de données ")
+st.subheader(" Données disponibles en base de données ")
 
 df_read = db_manager.read_streamlit_bd()
 

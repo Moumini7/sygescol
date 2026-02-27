@@ -36,6 +36,7 @@ with col2:
     
     st.markdown("<br>", unsafe_allow_html=True)
     
+    
     # Boutons stylisés
     st.link_button(
         "Ouvrir Google Form", 

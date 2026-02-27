@@ -49,6 +49,8 @@ except Exception as e:
     st.error(f"Erreur de lecture : {e}")
     st.stop()
 
+st.markdown(f"""<div/><div/><div/><div/>""", unsafe_allow_html=True)
+
 # Détails du dataset
 #--------------------------------
 col1, col2, col3 = st.columns(3)
@@ -65,19 +67,7 @@ with col3:
 
 # Apperçu du dataset selectionné
 #--------------------------------
-st.divider()
+st.markdown(f"""<div/><div/><div/><div/>""", unsafe_allow_html=True)
 st.dataframe(df, use_container_width=True)
 
-
-# Télécharger le dataset chargé
-#-------------------------------
-with open(file_path, "rb") as f:
-    st.download_button(
-        label="⬇️ Télécharger le dataset",
-        data=f,
-        file_name=selected_file,
-        mime="text/csv"
-    )
-
-st.divider()
 

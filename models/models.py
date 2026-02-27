@@ -69,19 +69,34 @@ class Strmlit_DBManager:
     def traitement_dataset(self, df):
 
         df = df.copy()
-        # Suppression des devise et conversion en float
-        df["prix"] = df["prix"].str.replace("CFA", "", regex=False)
-        df["prix"] = df["prix"].str.replace(" ", "", regex=False)
+
+        # Nettoyage prix
+        df["prix"] = (df["prix"].astype(str).str.replace(r"[^\d]", "", regex=True))
         df["prix"] = pd.to_numeric(df["prix"], errors="coerce")
-        df["prix"] = df["prix"].fillna(df["prix"].median())
         
+        # Remplacer NaN par la médiane pour éviter les problèmes de type et de valeurs aberrantes
+        df["prix"] = df["prix"].fillna(df["prix"].median())
+
+        # Suppression valeurs aberrantes (méthode robuste)
+        df["prix"] = df["prix"].clip(
+            lower=df["prix"].quantile(0.01),
+            upper=df["prix"].quantile(0.99)
+        )
+
+        df["prix"] = df["prix"].astype(int)
+
+        # Adresse
         df["adresse"] = df["adresse"].fillna(df["adresse"].mode()[0])
 
-        #Suppression des 2 première collonne
-        df = df.drop(columns=["web_scraper_order", "web_scraper_start_url", "image_lien"], errors="ignore")
+        # Suppression colonnes inutiles
+        df = df.drop(
+            columns=["web_scraper_order", "web_scraper_start_url"],
+            errors="ignore"
+        )
+
         df.rename(columns={df.columns[0]: "categorie"}, inplace=True)
-        df = df.reset_index(drop=True)
-        return df
+
+        return df.reset_index(drop=True)
 
     # Scraping + insertion
     def chargementData(self, categorie, nombre_pages):
@@ -139,7 +154,6 @@ class Strmlit_DBManager:
         return df
 
 
-
 class Styles_manager:
 
     @staticmethod
@@ -169,7 +183,6 @@ class Styles_manager:
             st.warning(f"Le fichier CSS est introuvable : {css_file}")
 
 
-
 class DataStats:
     @st.cache_data(ttl=120)
     @staticmethod
@@ -195,7 +208,7 @@ class DataStats:
 
     @staticmethod
     @st.cache_data(ttl=120)
-    def get_table_data(db_name="streamlit_.db", table_name="strml_tb"): # Mis à jour en 'tb'
+    def get_table_data(db_name="streamlit_.db", table_name="strml_td"): # Mis à jour en 'tb'
         current_dir = Path(__file__).resolve().parent.parent
         data_dir = current_dir / "data"  
         db_path = os.path.join(data_dir, db_name)
@@ -211,7 +224,7 @@ class DataStats:
             return f"Une erreur est survenue : {e}"
     
     @staticmethod
-    def clear_database(db_name="streamlit_.db", table_name="strml_tb"):
+    def clear_database(db_name="streamlit_.db", table_name="strml_td"):
         current_dir = Path(__file__).resolve().parent.parent
         data_dir = current_dir / "data"
         db_path = os.path.join(data_dir, db_name)
